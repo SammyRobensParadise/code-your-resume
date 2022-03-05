@@ -22,9 +22,11 @@ export default function CodeEditor({
   defaultValue = '',
   path,
 }: CodeEditorInterface): JSX.Element {
+  const baseColor = theme == 'light' ? '#fff' : '#1e1e1e';
+
   return (
     <Container id={id} margin={2}>
-      <Box bg='#1e1e1e' padding={4} borderRadius={4}>
+      <Box bg={baseColor} padding={4} borderRadius={4}>
         <Editor
           path={path}
           onChange={handleOnChange}

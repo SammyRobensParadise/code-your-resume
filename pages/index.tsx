@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   const [postBody, setPostBody] = useState('');
   const layout = [
     { i: 'left', x: 0, y: 0, w: 6, h: 12, static: true },
-    { i: 'right', x: 1, y: 0, w: 6, h: 12 },
+    { i: 'right', x: 6, y: 0, w: 6, h: 12 },
   ];
   return (
     <div className={styles.container}>
