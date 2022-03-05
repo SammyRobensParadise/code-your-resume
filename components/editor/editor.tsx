@@ -1,6 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import Editor from '@monaco-editor/react';
 import { Language, Theme, UUID } from '../../types';
+import { Container, Box } from '@chakra-ui/react';
 
 export interface CodeEditorInterface {
   id: UUID;
@@ -22,14 +23,16 @@ export default function CodeEditor({
   path,
 }: CodeEditorInterface): JSX.Element {
   return (
-    <div id={id}>
-      <Editor
-        path={path}
-        onChange={handleOnChange}
-        height={`${defaultHeight}vh`}
-        theme={theme}
-        defaultValue={defaultValue}
-      />
-    </div>
+    <Container id={id} margin={2}>
+      <Box bg='#1e1e1e' padding={4} borderRadius={4}>
+        <Editor
+          path={path}
+          onChange={handleOnChange}
+          height={`${defaultHeight}vh`}
+          theme={theme}
+          defaultValue={defaultValue}
+        />
+      </Box>
+    </Container>
   );
 }
