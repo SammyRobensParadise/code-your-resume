@@ -9,21 +9,22 @@ export interface CodeEditorInterface {
   defaultHeight?: number;
   defaultWith?: number;
   defaultValue?: string;
-  theme: Theme;
+  path: string;
+  theme?: Theme;
 }
 
 export default function CodeEditor({
   id,
-  language = 'html',
   handleOnChange,
   defaultHeight = 100,
   theme = 'light',
   defaultValue = '',
+  path,
 }: CodeEditorInterface): JSX.Element {
   return (
     <div id={id}>
       <Editor
-        language={language}
+        path={path}
         onChange={handleOnChange}
         height={`${defaultHeight}vh`}
         theme={theme}
