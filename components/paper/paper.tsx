@@ -1,18 +1,18 @@
-import React, { useRef, useEffect } from 'react'
-import * as files from '../../state/local/files'
+import type { NextPage } from 'next'
+import { useEffect, useRef } from 'react'
 
-export default function Viewer(): JSX.Element {
+import * as files from '../../state/local/files'
+function Paper() {
   const values = files.useFiles()
   const viewerRef = useRef<HTMLDivElement>(null)
+  console.log(values)
   useEffect(() => {
     if (viewerRef.current) {
       viewerRef.current.innerHTML =
         values && values[0].value ? values[0].value : ''
     }
   }, [viewerRef, values])
-  return (
-    <div>
-      <div ref={viewerRef}></div>
-    </div>
-  )
+  return <div className="page" ref={viewerRef}></div>
 }
+
+export default Paper

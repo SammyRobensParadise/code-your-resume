@@ -1,17 +1,25 @@
 import type { NextPage } from 'next'
-import { useState } from 'react'
-
+import React, { useEffect } from 'react'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import GridLayout from 'react-grid-layout'
-import EditorContainer from '../components/editor/editor-container'
-import Viewer from '../components/viewer/viewer'
+
+const layout = [
+  { i: 'left', x: 0, y: 0, w: 6, h: 24, static: true },
+  { i: 'right', x: 6, y: 0, w: 6, h: 24 }
+]
 
 const Home: NextPage = () => {
-  const layout = [
-    { i: 'left', x: 0, y: 0, w: 6, h: 12, static: true },
-    { i: 'right', x: 6, y: 0, w: 6, h: 12 }
-  ]
+  function handleMessage(message: MessageEvent) {
+    console.log(message)
+  }
+
+  useEffect(() => {
+    window.addEventListener('message', handleMessage)
+    return () => {
+      window.removeEventListener('message', handleMessage)
+    }
+  })
   return (
     <div className={styles.container}>
       <Head>
@@ -27,10 +35,10 @@ const Home: NextPage = () => {
         width={1200}
       >
         <div key="left">
-          <EditorContainer />
+          <iframe src="/code-editor" width="100%" height="100%" />
         </div>
         <div key="right">
-          <Viewer />
+          <iframe src="/viewer" width="100%" height="100%" />
         </div>
       </GridLayout>
     </div>

@@ -9,7 +9,6 @@ export default function EditorContainer() {
     if (files) {
       const { defaultFiles } = files
       defaultFiles.forEach((file) => {
-        console.log(file)
         files.updateFileData({
           operation: 'CREATE',
           payload: {

@@ -39,6 +39,7 @@ export interface UpdateFileDataEvent {
     name?: string
     path?: string
     extension?: Extension
+    destination?: HTMLElement
   }
 }
 
@@ -60,7 +61,6 @@ export const [useFiles] = bind<File[] | null>(
             value: value,
             extension: fallbackExtension
           }
-          console.log(newFile)
           return [...accumulator, newFile]
         }
         case 'VALUE': {
