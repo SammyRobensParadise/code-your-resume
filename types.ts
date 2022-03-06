@@ -8,4 +8,5 @@ export type File = {
   name: string;
   language: Language;
   value: string;
+  id: UUID;
 };

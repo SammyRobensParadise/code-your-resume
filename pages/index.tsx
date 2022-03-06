@@ -7,7 +7,6 @@ import GridLayout from 'react-grid-layout';
 import EditorContainer from '../components/editor/editor-container';
 
 const Home: NextPage = () => {
-  const [postBody, setPostBody] = useState('');
   const layout = [
     { i: 'left', x: 0, y: 0, w: 6, h: 12, static: true },
     { i: 'right', x: 6, y: 0, w: 6, h: 12 },
