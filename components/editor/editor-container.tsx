@@ -50,6 +50,7 @@ export default function EditorContainer() {
             <CodeEditor
               id={info.id}
               path={info.name}
+              name={info.name}
               language={info.language}
               defaultHeight={50}
               theme="vs-dark"
