@@ -1,6 +1,6 @@
 module.exports = {
   env: {
-    browser: true,
+    browser: true
   },
   extends: [
     'airbnb-typescript',
@@ -13,40 +13,54 @@ module.exports = {
     'prettier',
     'next/core-web-vitals',
     'next',
+    'next/core-web-vitals'
   ],
   parserOptions: {
-    project: './tsconfig.json',
+    project: './tsconfig.json'
   },
-  plugins: ['react', '@typescript-eslint', 'prettier', 'import', 'testing-library'],
+  plugins: [
+    'react',
+    '@typescript-eslint',
+    'prettier',
+    'import',
+    'testing-library'
+  ],
   rules: {
     /* NOTE: https://github.com/facebook/create-react-app/pull/8177 */
     '@typescript-eslint/ban-types': [
       'error',
       {
         types: {
-          'React.FC': null,
-        },
-      },
+          'React.FC': null
+        }
+      }
     ],
     '@typescript-eslint/naming-convention': [
       'error',
       {
         selector: ['variable'],
-        format: ['camelCase', 'PascalCase', 'snake_case', 'UPPER_CASE'],
-      },
+        format: ['camelCase', 'PascalCase', 'snake_case', 'UPPER_CASE']
+      }
     ],
     'import/order': [
       'error',
       {
-        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index'
+        ],
         'newlines-between': 'always',
         pathGroups: [
           {
             pattern: '~/**',
-            group: 'internal',
-          },
-        ],
-      },
+            group: 'internal'
+          }
+        ]
+      }
     ],
     'no-param-reassign': ['error', { props: false }],
     'prettier/prettier': 'error',
@@ -55,19 +69,19 @@ module.exports = {
     'react/require-default-props': 'off',
     'react/display-name': ['off'],
     '@typescript-eslint/no-floating-promises': ['off'],
-    'jsx-a11y/anchor-is-valid': ['off'],
+    'jsx-a11y/anchor-is-valid': ['off']
   },
   settings: {
     'import/resolver': {
       typescript: {
         alwaysTryTypes: true,
-        paths: './tsconfig.json',
-      },
+        paths: './tsconfig.json'
+      }
     },
     react: {
       pragma: 'React',
-      version: 'detect',
-    },
+      version: 'detect'
+    }
   },
   overrides: [
     {
@@ -76,23 +90,27 @@ module.exports = {
         'plugin:mocha/recommended',
         'plugin:cypress/recommended',
         'plugin:chai-friendly/recommended',
-        'plugin:testing-library/react',
+        'plugin:testing-library/react'
       ],
       parserOptions: {
-        project: ['./cypress/tsconfig.json'],
+        project: ['./cypress/tsconfig.json']
       },
 
-      rules: {},
+      rules: {}
     },
     {
       env: {
-        jest: true,
+        jest: true
       },
       files: ['./jest/**/*.{ts,tsx}'],
-      extends: ['plugin:jest/recommended', 'plugin:jest/style', 'plugin:testing-library/react'],
+      extends: [
+        'plugin:jest/recommended',
+        'plugin:jest/style',
+        'plugin:testing-library/react'
+      ],
       parserOptions: {
-        project: ['./jest/tsconfig.json'],
-      },
-    },
-  ],
-};
+        project: ['./jest/tsconfig.json']
+      }
+    }
+  ]
+}
