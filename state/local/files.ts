@@ -49,10 +49,18 @@ export const [fileList$, updateFileData] = createSignal<UpdateFileDataEvent>()
 export const [useFiles] = bind<File[] | null>(
   fileList$.pipe(
     scan((accumulator: File[], current: UpdateFileDataEvent) => {
-      console.log('called')
       switch (current.operation) {
         case 'CREATE': {
-          const { id, name, path, extension, language, value } = current.payload
+          const {
+            id,
+            name,
+            path,
+            extension,
+            language,
+            value,
+            source,
+            destination
+          } = current.payload
           const fallbackExtension = extension ? extension : 'html'
           const fallbackName = `default${Math.random() * 20}`
           const newFile: File = {
@@ -63,7 +71,16 @@ export const [useFiles] = bind<File[] | null>(
             value: value,
             extension: fallbackExtension
           }
-          return [...accumulator, newFile]
+          const payload = [...accumulator, newFile]
+          const message: Message = {
+            // unnamed messages are assumed to be from the editor
+            source: source ? source : 'editor',
+            // unnamed destinations are assumed to be for the viewer
+            destination: destination ? destination : 'viewer',
+            payload
+          }
+          window.parent.postMessage(message, '/')
+          return payload
         }
         case 'VALUE': {
           const { id, value, source, destination } = current.payload
@@ -84,26 +101,54 @@ export const [useFiles] = bind<File[] | null>(
           return payload
         }
         case 'NAME': {
-          const { id, name, path } = current.payload
+          const { id, name, path, source, destination } = current.payload
           accumulator.forEach((file) => {
             if (file.id === id && name && path) {
               file.name = name
               file.path = path
             }
           })
-          return [...accumulator]
+          const payload = [...accumulator]
+          const message: Message = {
+            // unnamed messages are assumed to be from the editor
+            source: source ? source : 'editor',
+            // unnamed destinations are assumed to be for the viewer
+            destination: destination ? destination : 'viewer',
+            payload
+          }
+          window.parent.postMessage(message, '/')
+          return payload
         }
         case 'LANGUAGE': {
-          const { id, language } = current.payload
+          const { id, language, source, destination } = current.payload
           accumulator.forEach((file) => {
             if (file.id === id && language) {
               file.language = language
             }
           })
-          return [...accumulator]
+          const payload = [...accumulator]
+          const message: Message = {
+            // unnamed messages are assumed to be from the editor
+            source: source ? source : 'editor',
+            // unnamed destinations are assumed to be for the viewer
+            destination: destination ? destination : 'viewer',
+            payload
+          }
+          window.parent.postMessage(message, '/')
+          return payload
         }
         default: {
-          return [...accumulator]
+          const { source, destination } = current.payload
+          const payload = [...accumulator]
+          const message: Message = {
+            // unnamed messages are assumed to be from the editor
+            source: source ? source : 'editor',
+            // unnamed destinations are assumed to be for the viewer
+            destination: destination ? destination : 'viewer',
+            payload
+          }
+          window.parent.postMessage(message, '/')
+          return payload
         }
       }
     }, []),
