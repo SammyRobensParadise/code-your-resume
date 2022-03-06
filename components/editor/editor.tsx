@@ -1,7 +1,8 @@
 import React, { ChangeEvent } from 'react'
 import Editor from '@monaco-editor/react'
 import { Language, Theme, UUID } from '../../types'
-import { Container, Box, Text } from '@chakra-ui/react'
+import { Container, Box, Text, Button } from '@chakra-ui/react'
+import { CloseIcon } from '@chakra-ui/icons'
 
 export interface CodeEditorInterface {
   id: UUID
@@ -28,16 +29,30 @@ export default function CodeEditor({
   const baseFontColor = theme == 'light' ? '#1e1e1e' : '#fff'
 
   return (
-    <Container id={id} margin={2}>
-      <Text
-        fontSize="lg"
+    <Container
+      id={id}
+      bg={baseColor}
+      margin={2}
+      borderRadius={4}
+      boxShadow="base"
+    >
+      <Box
+        display="flex"
         bg={baseColor}
         color={baseFontColor}
         paddingX={4}
-        paddingY={4}
+        paddingY={2}
+        borderTopRadius={4}
       >
-        {name}
-      </Text>
+        <Text fontSize="sm" lineHeight="2">
+          {name}
+        </Text>
+        <Box paddingX={2}>
+          <Button size="xs" backgroundColor="blackAlpha.700">
+            <CloseIcon w={3} h={3} />
+          </Button>
+        </Box>
+      </Box>
       <Box bg={baseColor} padding={4} borderRadius={4} borderTopRadius={0}>
         <Editor
           path={path}
