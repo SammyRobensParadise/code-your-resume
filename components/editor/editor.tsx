@@ -83,7 +83,7 @@ function LanguageMenu({
     <Menu closeOnSelect={false}>
       <MenuButton
         as={Button}
-        _hover={{ backgroundColor: '#adadad' }}
+        _hover={{ backgroundColor: '#080808' }}
         color={fontColor}
         backgroundColor={backgroundColor}
       >
@@ -98,7 +98,7 @@ function LanguageMenu({
         >
           <MenuItemOption
             value="html"
-            _hover={{ backgroundColor: '#adadad' }}
+            _hover={{ backgroundColor: '#080808' }}
             color={fontColor}
             backgroundColor={backgroundColor}
           >
@@ -106,7 +106,7 @@ function LanguageMenu({
           </MenuItemOption>
           <MenuItemOption
             value="css"
-            _hover={{ backgroundColor: '#adadad' }}
+            _hover={{ backgroundColor: '#080808' }}
             color={fontColor}
             backgroundColor={backgroundColor}
           >
@@ -114,7 +114,7 @@ function LanguageMenu({
           </MenuItemOption>
           <MenuItemOption
             value="javascript"
-            _hover={{ backgroundColor: '#adadad' }}
+            _hover={{ backgroundColor: '#080808' }}
             color={fontColor}
             backgroundColor={backgroundColor}
           >
