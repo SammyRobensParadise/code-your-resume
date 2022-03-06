@@ -11,7 +11,7 @@ function Paper() {
   function handleMessage(message: MessageEvent<Message>) {
     if (viewerRef.current) {
       const { payload } = message.data
-      const html = payload.filter((file) => file.language === 'html')
+      const html = payload?.filter((file) => file.language === 'html')
       let htmlString: string = ''
       html.forEach((htmlFile) => {
         htmlString = htmlString + htmlFile.value
