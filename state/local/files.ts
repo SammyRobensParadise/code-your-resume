@@ -70,7 +70,25 @@ export const [useFiles] = bind<File[] | null>(
               file.value = value
             }
           })
-          console.log(accumulator)
+          return [...accumulator]
+        }
+        case 'NAME': {
+          const { id, name, path } = current.payload
+          accumulator.forEach((file) => {
+            if (file.id === id && name && path) {
+              file.name = name
+              file.path = path
+            }
+          })
+          return [...accumulator]
+        }
+        case 'LANGUAGE': {
+          const { id, language } = current.payload
+          accumulator.forEach((file) => {
+            if (file.id === id && language) {
+              file.language = language
+            }
+          })
           return [...accumulator]
         }
         default: {
