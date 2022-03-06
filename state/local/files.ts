@@ -1,8 +1,8 @@
-import { Extension, File, Language, UUID } from '../../types'
+import { Extension, File, Language, Message, UUID } from '../../types'
 import { v4 as uuidv4 } from 'uuid'
 import { bind, shareLatest } from '@react-rxjs/core'
 import { createSignal } from '@react-rxjs/utils'
-import { scan, map, debounceTime } from 'rxjs'
+import { scan } from 'rxjs'
 import React from 'react'
 
 export const DEFAULT_HTML_FILE_NAME = 'index.html'
@@ -39,7 +39,8 @@ export interface UpdateFileDataEvent {
     name?: string
     path?: string
     extension?: Extension
-    destination?: HTMLElement
+    source?: string
+    destination?: 'viewer' | 'editor'
   }
 }
 
@@ -48,6 +49,7 @@ export const [fileList$, updateFileData] = createSignal<UpdateFileDataEvent>()
 export const [useFiles] = bind<File[] | null>(
   fileList$.pipe(
     scan((accumulator: File[], current: UpdateFileDataEvent) => {
+      console.log('called')
       switch (current.operation) {
         case 'CREATE': {
           const { id, name, path, extension, language, value } = current.payload
@@ -64,13 +66,22 @@ export const [useFiles] = bind<File[] | null>(
           return [...accumulator, newFile]
         }
         case 'VALUE': {
-          const { id, value } = current.payload
+          const { id, value, source, destination } = current.payload
           accumulator.forEach((file) => {
             if (file.id === id) {
               file.value = value
             }
           })
-          return [...accumulator]
+          const payload = [...accumulator]
+          const message: Message = {
+            // unnamed messages are assumed to be from the editor
+            source: source ? source : 'editor',
+            // unnamed destinations are assumed to be for the viewer
+            destination: destination ? destination : 'viewer',
+            payload
+          }
+          window.parent.postMessage(message, '/')
+          return payload
         }
         case 'NAME': {
           const { id, name, path } = current.payload

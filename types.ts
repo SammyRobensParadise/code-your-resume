@@ -5,6 +5,7 @@ export type Language = 'html' | 'css' | 'javascript'
 export type Theme = 'vs-dark' | 'light'
 
 export type Extension = 'html' | 'css' | 'js' | 'jsx'
+
 export type File = {
   name: string
   language: Language
@@ -12,4 +13,10 @@ export type File = {
   id: UUID
   path: string
   extension: Extension
+}
+
+export type Message = {
+  source: string
+  destination: 'viewer' | 'editor'
+  payload: File[]
 }
