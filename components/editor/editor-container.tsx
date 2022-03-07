@@ -3,6 +3,7 @@ import CodeEditor from './editor'
 import '/node_modules/react-grid-layout/css/styles.css'
 import '/node_modules/react-resizable/css/styles.css'
 import * as files from '../../state/local/files'
+import { Box } from '@chakra-ui/react'
 export default function EditorContainer() {
   const mapFiles = files.useFiles()
   useEffect(() => {
@@ -41,7 +42,7 @@ export default function EditorContainer() {
   }
 
   return (
-    <div>
+    <Box backgroundColor="gray.500">
       {mapFiles?.map((file) => {
         const info = file
         return (
@@ -61,6 +62,6 @@ export default function EditorContainer() {
           </div>
         )
       })}
-    </div>
+    </Box>
   )
 }

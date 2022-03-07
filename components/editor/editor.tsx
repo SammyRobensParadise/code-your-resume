@@ -140,12 +140,13 @@ export default function CodeEditor({
   const baseFontColor = theme == 'light' ? '#1e1e1e' : '#fff'
   const [visible, setVisible] = useState<boolean>(true)
   return visible ? (
-    <Container
+    <Box
       id={id}
       bg={baseColor}
       margin={2}
       borderRadius={4}
       boxShadow="base"
+      backgroundColor="gray.500"
     >
       <Flex
         bg={baseColor}
@@ -181,6 +182,6 @@ export default function CodeEditor({
           defaultValue={defaultValue}
         />
       </Box>
-    </Container>
+    </Box>
   ) : null
 }

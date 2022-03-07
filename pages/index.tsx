@@ -4,8 +4,9 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import GridLayout from 'react-grid-layout'
 import { Message } from '../types'
-import { Button } from '@chakra-ui/react'
-
+import { Button, Flex, Grid, GridItem } from '@chakra-ui/react'
+import Footer from '../components/footer/footer'
+import Sidebar from '../components/sidebar/sidebar'
 const layout = [
   { i: 'left', x: 0, y: 0, w: 6, h: 24, static: true },
   { i: 'right', x: 6, y: 0, w: 6, h: 24 }
@@ -40,49 +41,62 @@ const Home: NextPage = () => {
       window.removeEventListener('message', handleMessage)
     }
   })
+
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.height = `${window.innerHeight - 90}px`
+    }
+    if (viewerRef.current) {
+      viewerRef.current.height = `${window.innerHeight - 90}px`
+    }
+  })
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Code Your Resume</title>
-        <meta name="description" content="Code your Resume" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <GridLayout
-        className="layout"
-        layout={layout}
-        cols={12}
-        rowHeight={30}
-        width={1200}
-      >
-        <div key="left">
-          <iframe
-            src="/code-editor"
+    <>
+      <div className={styles.container}>
+        <Head>
+          <title>Code Your Resume</title>
+          <meta name="description" content="Code your Resume" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <Flex backgroundColor="gray.500">
+          <Sidebar />
+          <Grid
+            templateColumns="repeat(2, 1fr)"
+            gap={2}
             width="100%"
-            height="100%"
-            title="editor"
-            ref={editorRef}
-          />
-        </div>
-        <div key="right">
-          <iframe
-            src="/viewer"
-            width="100%"
-            height="100%"
-            title="viewer"
-            ref={viewerRef}
-          />
-        </div>
-      </GridLayout>
-      <div>
-        <Button
-          onClick={() => {
-            setPopoutViewer(window.open('/viewer'))
-          }}
-        >
-          Open In New Tab
-        </Button>
+            height="-moz-max-content"
+          >
+            <GridItem w="100%" h="auto">
+              <iframe
+                src="/code-editor"
+                width="100%"
+                height="100%"
+                title="editor"
+                ref={editorRef}
+              />
+            </GridItem>
+            <GridItem w="100%" h="auto">
+              <iframe
+                src="/viewer"
+                width="100%"
+                height="100%"
+                title="viewer"
+                ref={viewerRef}
+              />
+              <Button
+                onClick={() => {
+                  setPopoutViewer(window.open('/viewer'))
+                }}
+              >
+                Open In New Tab
+              </Button>
+            </GridItem>
+          </Grid>
+          <div></div>
+        </Flex>
       </div>
-    </div>
+      <Footer />
+    </>
   )
 }
 
