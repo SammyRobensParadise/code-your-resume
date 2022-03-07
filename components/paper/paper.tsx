@@ -1,22 +1,29 @@
 import type { NextPage } from 'next'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import * as files from '../../state/local/files'
 import { Message } from '../../types'
 function Paper() {
-  const values = files.useFiles()
   const viewerRef = useRef<HTMLDivElement>(null)
-  console.log(values)
-
+  const [css, updateCss] = useState<string>('')
   function handleMessage(message: MessageEvent<Message>) {
-    if (viewerRef.current) {
-      const { payload } = message.data
+    const { payload } = message.data
+    if (viewerRef.current && payload?.length) {
       const html = payload?.filter((file) => file.language === 'html')
-      let htmlString: string = ''
-      html.forEach((htmlFile) => {
-        htmlString = htmlString + htmlFile.value
-      })
-      viewerRef.current.innerHTML = htmlString
+      const css = payload?.filter((file) => file.language === 'css')
+      if (html?.length) {
+        let htmlString: string = ''
+        html.forEach((htmlFile) => {
+          htmlString = htmlString + htmlFile.value
+        })
+        viewerRef.current.innerHTML = htmlString
+      }
+      if (css.length) {
+        let cssString: string = ''
+        css.forEach((cssFile) => {
+          cssString = cssString + cssFile.value
+        })
+        updateCss(cssString)
+      }
     }
   }
 
@@ -27,7 +34,13 @@ function Paper() {
     }
   })
 
-  return <div className="page" ref={viewerRef}></div>
+  console.log(css)
+  return (
+    <div>
+      <style>{css}</style>
+      <div className="page" ref={viewerRef} />
+    </div>
+  )
 }
 
 export default Paper

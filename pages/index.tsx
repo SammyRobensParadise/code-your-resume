@@ -1,9 +1,10 @@
 import type { NextPage } from 'next'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import GridLayout from 'react-grid-layout'
 import { Message } from '../types'
+import { Button } from '@chakra-ui/react'
 
 const layout = [
   { i: 'left', x: 0, y: 0, w: 6, h: 24, static: true },
@@ -13,11 +14,20 @@ const layout = [
 const Home: NextPage = () => {
   const editorRef = useRef<HTMLIFrameElement>(null)
   const viewerRef = useRef<HTMLIFrameElement>(null)
-
+  const [popoutViewer, setPopoutViewer] = useState<Window | null>(null)
   function handleMessage(message: MessageEvent<Message>) {
     const { destination } = message.data
     if (destination === 'viewer' && viewerRef.current) {
-      viewerRef.current.contentWindow?.postMessage(message.data)
+      if (popoutViewer) {
+        popoutViewer.postMessage(
+          message.data,
+          `${window.location.origin}/viewer`
+        )
+      }
+      viewerRef.current.contentWindow?.postMessage(
+        message.data,
+        `${window.location.origin}/viewer`
+      )
     }
     if (destination === 'editor' && editorRef.current) {
       editorRef.current.contentWindow?.postMessage(message.data)
@@ -63,6 +73,15 @@ const Home: NextPage = () => {
           />
         </div>
       </GridLayout>
+      <div>
+        <Button
+          onClick={() => {
+            setPopoutViewer(window.open('/viewer'))
+          }}
+        >
+          Open In New Tab
+        </Button>
+      </div>
     </div>
   )
 }
