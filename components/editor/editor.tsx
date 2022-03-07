@@ -146,7 +146,7 @@ export default function CodeEditor({
       margin={2}
       borderRadius={4}
       boxShadow="base"
-      backgroundColor="gray.500"
+      backgroundColor="white"
     >
       <Flex
         bg={baseColor}

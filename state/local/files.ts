@@ -13,7 +13,7 @@ export const defaultFiles: File[] = [
     name: DEFAULT_HTML_FILE_NAME,
     path: DEFAULT_HTML_FILE_NAME,
     language: 'html',
-    value: '<h1>Your Name</h1>',
+    value: `<h1>Your Name<h1/>`,
     id: uuidv4(),
     extension: 'html'
   },
@@ -21,7 +21,7 @@ export const defaultFiles: File[] = [
     name: DEFAULT_CSS_FILE_NAME,
     path: DEFAULT_CSS_FILE_NAME,
     language: 'css',
-    value: 'h1 { color: red; }',
+    value: 'h1 { color: black; }',
     id: uuidv4(),
     extension: 'css'
   }

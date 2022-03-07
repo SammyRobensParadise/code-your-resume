@@ -42,7 +42,7 @@ export default function EditorContainer() {
   }
 
   return (
-    <Box backgroundColor="gray.500">
+    <Box backgroundColor="white">
       {mapFiles?.map((file) => {
         const info = file
         return (

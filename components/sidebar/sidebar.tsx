@@ -10,8 +10,6 @@ export default function Sidebar() {
       color="gray.50"
       borderBottom="1px solid"
       borderBottomColor="gray.50"
-    >
-      This is a sidebar
-    </Box>
+    ></Box>
   )
 }

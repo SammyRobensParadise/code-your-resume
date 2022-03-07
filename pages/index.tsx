@@ -2,11 +2,11 @@ import type { NextPage } from 'next'
 import React, { useEffect, useRef, useState } from 'react'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import GridLayout from 'react-grid-layout'
 import { Message } from '../types'
-import { Button, Flex, Grid, GridItem } from '@chakra-ui/react'
+import { Button, Flex, Grid, GridItem, Box, Tooltip } from '@chakra-ui/react'
 import Footer from '../components/footer/footer'
 import Sidebar from '../components/sidebar/sidebar'
+import { ExternalLinkIcon } from '@chakra-ui/icons'
 const layout = [
   { i: 'left', x: 0, y: 0, w: 6, h: 24, static: true },
   { i: 'right', x: 6, y: 0, w: 6, h: 24 }
@@ -58,7 +58,7 @@ const Home: NextPage = () => {
           <meta name="description" content="Code your Resume" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <Flex backgroundColor="gray.500">
+        <Flex backgroundColor="white">
           <Sidebar />
           <Grid
             templateColumns="repeat(2, 1fr)"
@@ -76,6 +76,22 @@ const Home: NextPage = () => {
               />
             </GridItem>
             <GridItem w="100%" h="auto">
+              <Box
+                padding={1}
+                borderRadius={4}
+                borderWidth="1px"
+                borderColor="gray.700"
+                margin={1}
+              >
+                <Tooltip label="Open Viewer in New Tab">
+                  <Button
+                    size="xs"
+                    onClick={() => setPopoutViewer(window.open('/viewer'))}
+                  >
+                    <ExternalLinkIcon mx="2px" />
+                  </Button>
+                </Tooltip>
+              </Box>
               <iframe
                 src="/viewer"
                 width="100%"
@@ -83,13 +99,6 @@ const Home: NextPage = () => {
                 title="viewer"
                 ref={viewerRef}
               />
-              <Button
-                onClick={() => {
-                  setPopoutViewer(window.open('/viewer'))
-                }}
-              >
-                Open In New Tab
-              </Button>
             </GridItem>
           </Grid>
           <div></div>
