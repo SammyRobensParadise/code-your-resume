@@ -27,7 +27,7 @@ export default function EditorContainer() {
         })
       })
     }
-  }, [files])
+  }, [])
 
   function handleOnInputChange(
     id: string,

@@ -1,7 +1,5 @@
 import {
   Box,
-  Tooltip,
-  Button,
   Flex,
   NumberInput,
   NumberInputField,
@@ -29,7 +27,7 @@ function Toolbar({
 
   useEffect(() => {
     updateZoom(zoomValue)
-  }, [zoomValue])
+  }, [updateZoom, zoomValue])
 
   return (
     <Box
