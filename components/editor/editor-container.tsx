@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react'
-import { useLocalStorage } from 'usehooks-ts'
-
 import CodeEditor from './editor'
 import '/node_modules/react-grid-layout/css/styles.css'
 import '/node_modules/react-resizable/css/styles.css'
 import * as files from '../../state/local/files'
 import { Box } from '@chakra-ui/react'
+import { File } from '../../types'
 
 export default function EditorContainer() {
   const mapFiles = files.useFiles()
@@ -46,8 +45,8 @@ export default function EditorContainer() {
   }
 
   return (
-    <Box backgroundColor="white">
-      {mapFiles?.map((file) => {
+    <Box backgroundColor="white" className="editors">
+      {mapFiles?.map((file: File) => {
         const info = file
         return (
           <div key={info.name}>
@@ -56,7 +55,7 @@ export default function EditorContainer() {
               path={info.name}
               name={info.name}
               language={info.language}
-              defaultHeight={50}
+              defaultHeight={30}
               theme="vs-dark"
               defaultValue={info.value}
               handleOnChange={(value, event) => {

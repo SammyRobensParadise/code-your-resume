@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
 import React, { useEffect, useRef, useState } from 'react'
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
 import { Message } from '../types'
 import { Button, Flex, Grid, GridItem, Box, Tooltip } from '@chakra-ui/react'
 import Footer from '../components/footer/footer'
@@ -79,11 +78,11 @@ const Home: NextPage = () => {
           width="100%"
           height="-moz-max-content"
         >
-          <GridItem w="100%" h="auto">
+          <GridItem w="100%">
             <iframe
               src="/code-editor"
               width="100%"
-              height="100%"
+              style={{ height: '100%' }}
               title="editor"
               ref={editorRef}
             />
