@@ -4,7 +4,6 @@ import { Language, Theme, UUID } from '../../types'
 import * as files from '../../state/local/files'
 
 import {
-  Container,
   Box,
   Button,
   Flex,
