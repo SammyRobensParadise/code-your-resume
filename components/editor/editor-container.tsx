@@ -3,7 +3,6 @@ import CodeEditor from './editor'
 import '/node_modules/react-grid-layout/css/styles.css'
 import '/node_modules/react-resizable/css/styles.css'
 import * as files from '../../state/local/files'
-import { Box } from '@chakra-ui/react'
 import { File } from '../../types'
 
 export default function EditorContainer() {
@@ -45,7 +44,7 @@ export default function EditorContainer() {
   }
 
   return (
-    <Box backgroundColor="white" className="editors">
+    <div className="editors h-full">
       {mapFiles?.map((file: File) => {
         const info = file
         return (
@@ -55,7 +54,7 @@ export default function EditorContainer() {
               path={info.name}
               name={info.name}
               language={info.language}
-              defaultHeight={30}
+              openEditors={mapFiles.length}
               theme="vs-dark"
               defaultValue={info.value}
               handleOnChange={(value, event) => {
@@ -65,6 +64,6 @@ export default function EditorContainer() {
           </div>
         )
       })}
-    </Box>
+    </div>
   )
 }

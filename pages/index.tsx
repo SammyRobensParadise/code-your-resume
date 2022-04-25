@@ -7,11 +7,6 @@ import Footer from '../components/footer/footer'
 import Sidebar from '../components/sidebar/sidebar'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 
-const layout = [
-  { i: 'left', x: 0, y: 0, w: 6, h: 24, static: true },
-  { i: 'right', x: 6, y: 0, w: 6, h: 24 }
-]
-
 const Home: NextPage = () => {
   const editorRef = useRef<HTMLIFrameElement>(null)
   const viewerRef = useRef<HTMLIFrameElement>(null)

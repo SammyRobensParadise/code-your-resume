@@ -23,7 +23,7 @@ export interface CodeEditorInterface {
   id: UUID
   language?: Language
   handleOnChange?: (value: string | undefined, event: ChangeEvent) => void
-  defaultHeight?: number
+  openEditors?: number
   defaultWith?: number
   defaultValue?: string
   path: string
@@ -128,7 +128,7 @@ function LanguageMenu({
 export default function CodeEditor({
   id,
   handleOnChange,
-  defaultHeight = 100,
+  openEditors = 2,
   theme = 'light',
   defaultValue = '',
   path,
@@ -138,6 +138,7 @@ export default function CodeEditor({
   const baseColor = theme === 'light' ? '#fff' : '#1e1e1e'
   const baseFontColor = theme == 'light' ? '#1e1e1e' : '#fff'
   const [visible, setVisible] = useState<boolean>(true)
+  console.log(window.innerHeight)
   return visible ? (
     <Box
       id={id}
@@ -172,11 +173,17 @@ export default function CodeEditor({
           </Button>
         </Box>
       </Flex>
-      <Box bg={baseColor} padding={4} borderRadius={4} borderTopRadius={0}>
+      <Box
+        bg={baseColor}
+        padding={4}
+        borderRadius={4}
+        borderTopRadius={0}
+        className="code-editor"
+      >
         <Editor
           path={path}
           onChange={handleOnChange}
-          height={`${defaultHeight}vh`}
+          height={`${Math.round(window.innerHeight / openEditors) - 100}px`}
           theme={theme}
           defaultValue={defaultValue}
         />
