@@ -31,6 +31,12 @@ export interface CodeEditorInterface {
   name?: string
 }
 
+export const editorColors: { light: string; dark: string; med: string } = {
+  light: '#fff',
+  dark: '#1e1e1e',
+  med: '#080808'
+}
+
 function Name({ name, id }: { name: string | undefined; id: UUID }) {
   function handleOnSubmit(nextName: string) {
     if (files) {
@@ -82,7 +88,7 @@ function LanguageMenu({
     <Menu closeOnSelect={false}>
       <MenuButton
         as={Button}
-        _hover={{ backgroundColor: '#080808' }}
+        _hover={{ backgroundColor: editorColors.med }}
         color={fontColor}
         backgroundColor={backgroundColor}
       >
@@ -97,7 +103,7 @@ function LanguageMenu({
         >
           <MenuItemOption
             value="html"
-            _hover={{ backgroundColor: '#080808' }}
+            _hover={{ backgroundColor: editorColors.med }}
             color={fontColor}
             backgroundColor={backgroundColor}
           >
@@ -105,7 +111,7 @@ function LanguageMenu({
           </MenuItemOption>
           <MenuItemOption
             value="css"
-            _hover={{ backgroundColor: '#080808' }}
+            _hover={{ backgroundColor: editorColors.med }}
             color={fontColor}
             backgroundColor={backgroundColor}
           >
@@ -113,7 +119,7 @@ function LanguageMenu({
           </MenuItemOption>
           <MenuItemOption
             value="javascript"
-            _hover={{ backgroundColor: '#080808' }}
+            _hover={{ backgroundColor: editorColors.med }}
             color={fontColor}
             backgroundColor={backgroundColor}
           >
@@ -135,10 +141,11 @@ export default function CodeEditor({
   name,
   language
 }: CodeEditorInterface): JSX.Element | null {
-  const baseColor = theme === 'light' ? '#fff' : '#1e1e1e'
-  const baseFontColor = theme == 'light' ? '#1e1e1e' : '#fff'
+  const baseColor = theme === 'light' ? editorColors.light : editorColors.dark
+  const baseFontColor =
+    theme == 'light' ? editorColors.dark : editorColors.light
   const [visible, setVisible] = useState<boolean>(true)
-  console.log(window.innerHeight)
+
   return visible ? (
     <Box
       id={id}

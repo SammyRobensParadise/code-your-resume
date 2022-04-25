@@ -69,6 +69,7 @@ function Paper(): JSX.Element {
   const viewerRef = useRef<HTMLDivElement>(null)
   const [css, updateCss] = useState<string>('')
   const [zoom, updateZoom] = useState<string>('70')
+
   function handleMessage(message: MessageEvent<Message>) {
     const { payload } = message.data
     if (viewerRef.current && payload?.length) {

@@ -2,7 +2,7 @@ import { Extension, File, Language, Message, UUID } from '../../types'
 import { v4 as uuidv4 } from 'uuid'
 import { bind, shareLatest } from '@react-rxjs/core'
 import { createSignal } from '@react-rxjs/utils'
-import { scan } from 'rxjs'
+import { debounceTime, scan } from 'rxjs'
 import React from 'react'
 
 export const DEFAULT_HTML_FILE_NAME = 'index.html'
@@ -14,7 +14,7 @@ export const defaultFiles: File[] = [
     path: DEFAULT_HTML_FILE_NAME,
     language: 'html',
     value: `<h1>Your Name<h1/>`,
-    id: uuidv4(),
+    id: 'default-1',
     extension: 'html'
   },
   {
@@ -22,7 +22,7 @@ export const defaultFiles: File[] = [
     path: DEFAULT_CSS_FILE_NAME,
     language: 'css',
     value: 'h1 { color: black; }',
-    id: uuidv4(),
+    id: 'default-2',
     extension: 'css'
   }
 ]
@@ -63,14 +63,17 @@ export const [useFiles] = bind<File[] | null>(
           } = current.payload
           const fallbackExtension = extension ? extension : 'html'
           const fallbackName = `default${Math.random() * 20}`
+          const newId: string = uuidv4()
+          console.log(id)
           const newFile: File = {
             name: name ? name : `${fallbackName}.${fallbackExtension}`,
             path: path ? path : `${fallbackName}.${fallbackExtension}`,
-            id: id ? id : uuidv4(),
+            id: id ? id : newId,
             language: language ? language : 'html',
             value: value,
             extension: fallbackExtension
           }
+          console.log(newFile)
           const payload = [...accumulator, newFile]
           const message: Message = {
             // unnamed messages are assumed to be from the editor
@@ -80,13 +83,24 @@ export const [useFiles] = bind<File[] | null>(
             payload
           }
           window.parent.postMessage(message, '/')
+          // handle local storage
+          const doesExistInLocalSorage = !!(id
+            ? window.localStorage.getItem(id)
+            : null)
+
+          if (!doesExistInLocalSorage) {
+            localStorage.setItem(id ? id : newId, JSON.stringify(newFile))
+          }
           return payload
         }
         case 'VALUE': {
           const { id, value, source, destination } = current.payload
+          let currentFile: File | null = null
+
           accumulator.forEach((file) => {
             if (file.id === id) {
               file.value = value
+              currentFile = file
             }
           })
           const payload = [...accumulator]
@@ -98,14 +112,22 @@ export const [useFiles] = bind<File[] | null>(
             payload
           }
           window.parent.postMessage(message, '/')
+
+          if (id && currentFile) {
+            window.localStorage.setItem(id, JSON.stringify(currentFile))
+          }
+
           return payload
         }
         case 'NAME': {
           const { id, name, path, source, destination } = current.payload
+          let currentFile: File | null = null
+
           accumulator.forEach((file) => {
             if (file.id === id && name && path) {
               file.name = name
               file.path = path
+              currentFile = file
             }
           })
           const payload = [...accumulator]
@@ -117,13 +139,20 @@ export const [useFiles] = bind<File[] | null>(
             payload
           }
           window.parent.postMessage(message, '/')
+
+          if (id && currentFile) {
+            window.localStorage.setItem(id, JSON.stringify(currentFile))
+          }
           return payload
         }
         case 'LANGUAGE': {
           const { id, language, source, destination } = current.payload
+          let currentFile: File | null = null
+
           accumulator.forEach((file) => {
             if (file.id === id && language) {
               file.language = language
+              currentFile = file
             }
           })
           const payload = [...accumulator]
@@ -135,6 +164,10 @@ export const [useFiles] = bind<File[] | null>(
             payload
           }
           window.parent.postMessage(message, '/')
+
+          if (id && currentFile) {
+            window.localStorage.setItem(id, JSON.stringify(currentFile))
+          }
           return payload
         }
         default: {
@@ -152,7 +185,8 @@ export const [useFiles] = bind<File[] | null>(
         }
       }
     }, []),
-    shareLatest()
+    shareLatest(),
+    debounceTime(500)
   ),
   null
 )

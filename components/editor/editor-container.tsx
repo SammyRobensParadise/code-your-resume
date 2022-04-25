@@ -11,23 +11,33 @@ export default function EditorContainer() {
   useEffect(() => {
     if (files) {
       const { defaultFiles } = files
-      defaultFiles.forEach((file) => {
-        files.updateFileData({
-          operation: 'CREATE',
-          payload: {
-            id: file.id,
-            name: file.name,
-            path: file.name,
-            language: file.language,
-            value: file.value,
-            extension: file.extension
+      defaultFiles.forEach((file: File) => {
+        if (!window.localStorage.getItem(file.id)) {
+          files.updateFileData({
+            operation: 'CREATE',
+            payload: {
+              id: file.id,
+              name: file.name,
+              path: file.name,
+              language: file.language,
+              value: file.value,
+              extension: file.extension
+            }
+          })
+        } else {
+          const data = window.localStorage.getItem(file.id)
+          if (data) {
+            files.updateFileData({
+              operation: 'CREATE',
+              payload: JSON.parse(data)
+            })
           }
-        })
+        }
       })
     }
   }, [])
 
-  function handleOnInputChange(
+  function handleOnChange(
     id: string,
     value: string | undefined,
     event: React.ChangeEvent
@@ -58,7 +68,7 @@ export default function EditorContainer() {
               theme="vs-dark"
               defaultValue={info.value}
               handleOnChange={(value, event) => {
-                handleOnInputChange(info.id, value, event)
+                handleOnChange(info.id, value, event)
               }}
             />
           </div>
