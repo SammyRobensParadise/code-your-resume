@@ -1,15 +1,47 @@
-import { Box } from '@chakra-ui/react'
-import React from 'react'
+import { Box, Container, Heading, Stack } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
+import { Message } from '../../types'
+
+import { File } from '../../types'
+import SideBarItem from './sidebar-item'
 
 export default function Sidebar() {
+  const [localFiles, setFiles] = useState<File[]>([])
+
+  function handleMessage(message: MessageEvent<Message>) {
+    const { payload } = message.data
+    if (payload?.length) {
+      setFiles(payload)
+    }
+  }
+  useEffect(() => {
+    window.addEventListener('message', handleMessage)
+    return () => {
+      window.removeEventListener('message', handleMessage)
+    }
+  })
+
   return (
     <Box
       height="auto"
-      backgroundColor="gray.700"
-      width="12"
-      color="gray.50"
-      borderBottom="1px solid"
-      borderBottomColor="gray.50"
-    ></Box>
+      border="1px solid"
+      borderColor="gray.50"
+      className="flex-grow w-max"
+    >
+      <Container className="p-4">
+        <Stack>
+          <Heading as="h3" size="sm">
+            Files
+          </Heading>
+          {localFiles &&
+            localFiles.length &&
+            localFiles?.map((file) => (
+              <div key={file.name}>
+                <SideBarItem file={file} />
+              </div>
+            ))}
+        </Stack>
+      </Container>
+    </Box>
   )
 }

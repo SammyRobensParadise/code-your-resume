@@ -108,7 +108,6 @@ const Home: NextPage = () => {
             />
           </GridItem>
         </Grid>
-        <div></div>
       </Flex>
       <Footer />
     </>

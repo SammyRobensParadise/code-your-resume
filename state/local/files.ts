@@ -15,7 +15,8 @@ export const defaultFiles: File[] = [
     language: 'html',
     value: `<h1>Your Name<h1/>`,
     id: 'default-1',
-    extension: 'html'
+    extension: 'html',
+    isOpen: true
   },
   {
     name: DEFAULT_CSS_FILE_NAME,
@@ -23,11 +24,19 @@ export const defaultFiles: File[] = [
     language: 'css',
     value: 'h1 { color: black; }',
     id: 'default-2',
-    extension: 'css'
+    extension: 'css',
+    isOpen: true
   }
 ]
 
-export type Operation = 'VALUE' | 'NAME' | 'LANGUAGE' | 'CREATE' | 'DELETE'
+export type Operation =
+  | 'VALUE'
+  | 'NAME'
+  | 'LANGUAGE'
+  | 'CREATE'
+  | 'DELETE'
+  | 'CLOSE'
+  | 'OPEN'
 
 export interface UpdateFileDataEvent {
   operation: Operation
@@ -41,6 +50,7 @@ export interface UpdateFileDataEvent {
     extension?: Extension
     source?: string
     destination?: 'viewer' | 'editor'
+    isOpen?: boolean
   }
 }
 
@@ -59,21 +69,21 @@ export const [useFiles] = bind<File[] | null>(
             language,
             value,
             source,
-            destination
+            destination,
+            isOpen
           } = current.payload
           const fallbackExtension = extension ? extension : 'html'
           const fallbackName = `default${Math.random() * 20}`
           const newId: string = uuidv4()
-          console.log(id)
           const newFile: File = {
             name: name ? name : `${fallbackName}.${fallbackExtension}`,
             path: path ? path : `${fallbackName}.${fallbackExtension}`,
             id: id ? id : newId,
             language: language ? language : 'html',
             value: value,
-            extension: fallbackExtension
+            extension: fallbackExtension,
+            isOpen: isOpen ? isOpen : true
           }
-          console.log(newFile)
           const payload = [...accumulator, newFile]
           const message: Message = {
             // unnamed messages are assumed to be from the editor
@@ -163,6 +173,57 @@ export const [useFiles] = bind<File[] | null>(
             destination: destination ? destination : 'viewer',
             payload
           }
+          window.parent.postMessage(message, '/')
+
+          if (id && currentFile) {
+            window.localStorage.setItem(id, JSON.stringify(currentFile))
+          }
+          return payload
+        }
+        case 'CLOSE': {
+          const { id, source, destination } = current.payload
+          let currentFile: File | null = null
+
+          accumulator.forEach((file) => {
+            if (file.id === id) {
+              file.isOpen = false
+              currentFile = file
+            }
+          })
+          const payload = [...accumulator]
+          const message: Message = {
+            // unnamed messages are assumed to be from the editor
+            source: source ? source : 'editor',
+            // unnamed destinations are assumed to be for the viewer
+            destination: destination ? destination : 'viewer',
+            payload
+          }
+          window.parent.postMessage(message, '/')
+
+          if (id && currentFile) {
+            window.localStorage.setItem(id, JSON.stringify(currentFile))
+          }
+          return payload
+        }
+        case 'OPEN': {
+          const { id, source, destination } = current.payload
+          let currentFile: File | null = null
+
+          accumulator.forEach((file) => {
+            if (file.id === id) {
+              file.isOpen = true
+              currentFile = file
+            }
+          })
+          const payload = [...accumulator]
+          const message: Message = {
+            // unnamed messages are assumed to be from the editor
+            source: source ? source : 'editor',
+            // unnamed destinations are assumed to be for the viewer
+            destination: destination ? destination : 'viewer',
+            payload
+          }
+
           window.parent.postMessage(message, '/')
 
           if (id && currentFile) {

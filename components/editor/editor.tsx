@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent } from 'react'
 import Editor from '@monaco-editor/react'
 import { Language, Theme, UUID } from '../../types'
 import * as files from '../../state/local/files'
@@ -144,9 +144,17 @@ export default function CodeEditor({
   const baseColor = theme === 'light' ? editorColors.light : editorColors.dark
   const baseFontColor =
     theme == 'light' ? editorColors.dark : editorColors.light
-  const [visible, setVisible] = useState<boolean>(true)
 
-  return visible ? (
+  function handleClose() {
+    if (files) {
+      files.updateFileData({
+        operation: 'CLOSE',
+        payload: { id: id }
+      })
+    }
+  }
+
+  return (
     <Box
       id={id}
       bg={baseColor}
@@ -174,7 +182,7 @@ export default function CodeEditor({
           <Button
             size="xs"
             backgroundColor="blackAlpha.700"
-            onClick={() => setVisible(false)}
+            onClick={handleClose}
           >
             <CloseIcon w={3} h={3} />
           </Button>
@@ -196,5 +204,5 @@ export default function CodeEditor({
         />
       </Box>
     </Box>
-  ) : null
+  )
 }

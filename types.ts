@@ -13,6 +13,7 @@ export type File = {
   id: UUID
   path: string
   extension: Extension
+  isOpen?: true | false
 }
 
 export type Message = {

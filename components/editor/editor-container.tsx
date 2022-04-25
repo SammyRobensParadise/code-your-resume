@@ -59,18 +59,20 @@ export default function EditorContainer() {
         const info = file
         return (
           <div key={info.name}>
-            <CodeEditor
-              id={info.id}
-              path={info.name}
-              name={info.name}
-              language={info.language}
-              openEditors={mapFiles.length}
-              theme="vs-dark"
-              defaultValue={info.value}
-              handleOnChange={(value, event) => {
-                handleOnChange(info.id, value, event)
-              }}
-            />
+            {file.isOpen && (
+              <CodeEditor
+                id={info.id}
+                path={info.name}
+                name={info.name}
+                language={info.language}
+                openEditors={mapFiles.length}
+                theme="vs-dark"
+                defaultValue={info.value}
+                handleOnChange={(value, event) => {
+                  handleOnChange(info.id, value, event)
+                }}
+              />
+            )}
           </div>
         )
       })}
