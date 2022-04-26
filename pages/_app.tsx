@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
+import { Subscribe } from '@react-rxjs/core'
 
 interface App extends AppProps {
   pageProps: Record<string, unknown>
@@ -8,7 +9,9 @@ interface App extends AppProps {
 function Entry({ Component, pageProps }: App) {
   return (
     <ChakraProvider>
-      <Component {...pageProps} />
+      <Subscribe>
+        <Component {...pageProps} />
+      </Subscribe>
     </ChakraProvider>
   )
 }

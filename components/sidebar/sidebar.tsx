@@ -1,12 +1,13 @@
 import { Box, Container, Heading, Stack } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { Message } from '../../types'
-
+import * as files from '../../state/local/files'
 import { File } from '../../types'
 import SideBarItem from './sidebar-item'
 
 export default function Sidebar() {
   const [localFiles, setFiles] = useState<File[]>([])
+  const mapFiles = files.useFiles()
 
   function handleMessage(message: MessageEvent<Message>) {
     const { payload } = message.data
@@ -20,6 +21,9 @@ export default function Sidebar() {
       window.removeEventListener('message', handleMessage)
     }
   })
+  useEffect(() => {
+    console.log(mapFiles)
+  }, [mapFiles])
 
   return (
     <Box

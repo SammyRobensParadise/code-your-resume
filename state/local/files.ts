@@ -129,6 +129,7 @@ export const [useFiles] = bind<File[] | null>(
 
           return payload
         }
+
         case 'NAME': {
           const { id, name, path, source, destination } = current.payload
           let currentFile: File | null = null
