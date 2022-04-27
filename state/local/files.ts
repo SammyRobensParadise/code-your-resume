@@ -101,12 +101,13 @@ export const [useFiles] = bind<File[] | null>(
           if (!doesExistInLocalSorage) {
             localStorage.setItem(id ? id : newId, JSON.stringify(newFile))
           }
+          console.log('create', payload)
           return payload
         }
         case 'VALUE': {
           const { id, value, source, destination } = current.payload
           let currentFile: File | null = null
-
+          console.log(accumulator)
           accumulator.forEach((file) => {
             if (file.id === id) {
               file.value = value
@@ -126,6 +127,7 @@ export const [useFiles] = bind<File[] | null>(
           if (id && currentFile) {
             window.localStorage.setItem(id, JSON.stringify(currentFile))
           }
+          console.log('value', payload)
 
           return payload
         }
@@ -141,6 +143,7 @@ export const [useFiles] = bind<File[] | null>(
               currentFile = file
             }
           })
+
           const payload = [...accumulator]
           const message: Message = {
             // unnamed messages are assumed to be from the editor
@@ -154,6 +157,8 @@ export const [useFiles] = bind<File[] | null>(
           if (id && currentFile) {
             window.localStorage.setItem(id, JSON.stringify(currentFile))
           }
+          console.log('name', payload)
+
           return payload
         }
         case 'LANGUAGE': {
@@ -179,6 +184,8 @@ export const [useFiles] = bind<File[] | null>(
           if (id && currentFile) {
             window.localStorage.setItem(id, JSON.stringify(currentFile))
           }
+          console.log('language', payload)
+
           return payload
         }
         case 'CLOSE': {
@@ -247,8 +254,7 @@ export const [useFiles] = bind<File[] | null>(
         }
       }
     }, []),
-    shareLatest(),
-    debounceTime(500)
+    shareLatest()
   ),
   null
 )
