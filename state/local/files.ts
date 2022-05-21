@@ -13,7 +13,8 @@ export const defaultFiles: File[] = [
     value: `<h1>Your Name<h1/>`,
     id: 'default-1',
     extension: 'html',
-    isOpen: true
+    isOpen: true,
+    type: 'source'
   },
   {
     name: DEFAULT_CSS_FILE_NAME,
@@ -22,7 +23,8 @@ export const defaultFiles: File[] = [
     value: 'h1 { color: black; }',
     id: 'default-2',
     extension: 'css',
-    isOpen: true
+    isOpen: true,
+    type: 'source'
   }
 ]
 

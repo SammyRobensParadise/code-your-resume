@@ -14,6 +14,7 @@ export type File = {
   path: string
   extension: Extension
   isOpen?: true | false
+  type: 'source'
 }
 
 export type Message = {

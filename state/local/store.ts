@@ -17,7 +17,8 @@ export const store = {
           language: language ? language : 'html',
           value: value,
           extension: fallbackExtension,
-          isOpen: isOpen ? isOpen : true
+          isOpen: isOpen ? isOpen : true,
+          type: 'source'
         }
 
         // handle local storage
@@ -113,9 +114,10 @@ export const store = {
     const values: Storage = window.localStorage
     const size = window.localStorage.length
     if (size) {
-      return Object.entries(values).map((value) => {
+      const v = Object.entries(values).map((value) => {
         return JSON.parse(value[1])
       })
+      return v.filter((item: File) => item.type === 'source')
     }
     return null
   }

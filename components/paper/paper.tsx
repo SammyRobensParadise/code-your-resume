@@ -94,7 +94,6 @@ function Paper(): JSX.Element {
   }
 
   const write = useCallback(() => {
-    console.log(localStore)
     let concatHtml = ''
     let concatCss = ''
     localStore.forEach((file) => {
