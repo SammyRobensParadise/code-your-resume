@@ -16,7 +16,7 @@ import {
   MenuOptionGroup,
   MenuItemOption
 } from '@chakra-ui/react'
-import { CloseIcon } from '@chakra-ui/icons'
+import { CloseIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import { store } from '../../state/local/store'
 
 export interface CodeEditorInterface {
@@ -60,12 +60,10 @@ function Name({ name, id }: { name: string | undefined; id: UUID }) {
 
 function LanguageMenu({
   backgroundColor,
-  fontColor,
   language,
   id
 }: {
   backgroundColor: string
-  fontColor: string
   language: Language | undefined
   id: UUID
 }) {
@@ -79,13 +77,9 @@ function LanguageMenu({
 
   return (
     <Menu closeOnSelect={false}>
-      <MenuButton
-        as={Button}
-        _hover={{ backgroundColor: editorColors.med }}
-        color={fontColor}
-        backgroundColor={backgroundColor}
-      >
+      <MenuButton as={Button}>
         {language}
+        <ChevronDownIcon />
       </MenuButton>
       <MenuList minWidth="240px" backgroundColor={backgroundColor}>
         <MenuOptionGroup
@@ -94,30 +88,9 @@ function LanguageMenu({
           type="radio"
           onChange={handleOnChange}
         >
-          <MenuItemOption
-            value="html"
-            _hover={{ backgroundColor: editorColors.med }}
-            color={fontColor}
-            backgroundColor={backgroundColor}
-          >
-            HTML
-          </MenuItemOption>
-          <MenuItemOption
-            value="css"
-            _hover={{ backgroundColor: editorColors.med }}
-            color={fontColor}
-            backgroundColor={backgroundColor}
-          >
-            CSS
-          </MenuItemOption>
-          <MenuItemOption
-            value="javascript"
-            _hover={{ backgroundColor: editorColors.med }}
-            color={fontColor}
-            backgroundColor={backgroundColor}
-          >
-            JavaScript
-          </MenuItemOption>
+          <MenuItemOption value="html">HTML</MenuItemOption>
+          <MenuItemOption value="css">CSS</MenuItemOption>
+          <MenuItemOption value="javascript">JavaScript</MenuItemOption>
         </MenuOptionGroup>
       </MenuList>
     </Menu>
@@ -163,18 +136,9 @@ export default function CodeEditor({
       >
         <Name name={name} id={id} />
         <Spacer />
-        <LanguageMenu
-          backgroundColor={baseColor}
-          fontColor={baseFontColor}
-          language={language}
-          id={id}
-        />
-        <Box paddingX={2} paddingY={2}>
-          <Button
-            size="xs"
-            backgroundColor="blackAlpha.700"
-            onClick={handleClose}
-          >
+        <LanguageMenu backgroundColor={baseColor} language={language} id={id} />
+        <Box paddingX={2}>
+          <Button onClick={handleClose}>
             <CloseIcon w={3} h={3} />
           </Button>
         </Box>

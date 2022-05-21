@@ -59,7 +59,7 @@ export default function EditorContainer() {
                   path={file.name}
                   name={file.name}
                   language={file.language}
-                  theme="vs-dark"
+                  theme="light"
                   defaultValue={file.value}
                   handleOnChange={(value) => handleOnChange(value, file.id)}
                 />

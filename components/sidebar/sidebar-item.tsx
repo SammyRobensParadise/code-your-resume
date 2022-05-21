@@ -53,7 +53,7 @@ function Name({ name, id }: { name: string | undefined; id: UUID }) {
           <EditableInput />
         </Editable>
       ) : (
-        <Tooltip label="Double Click to Edit" aria-label="Tooltip Edit">
+        <Tooltip label="Double Click to Edit Name" aria-label="Tooltip Edit">
           <Button
             onDoubleClick={() => setIsEditing(true)}
             onClick={handleOnClick}
@@ -79,12 +79,8 @@ export default function SideBarItem({ file }: { file: File }) {
         <Spacer />
         <ButtonGroup>
           <Button size="xs">
-            <Tooltip
-              label="Delete"
-              aria-label="Delete"
-              backgroundColor="blackAlpha.700"
-            >
-              <DeleteIcon color="blackAlpha.700" />
+            <Tooltip label={`Delete ${file.name}`} aria-label="Delete">
+              <DeleteIcon />
             </Tooltip>
           </Button>
         </ButtonGroup>

@@ -1,3 +1,4 @@
+import { DownloadIcon } from '@chakra-ui/icons'
 import {
   Box,
   Flex,
@@ -6,20 +7,25 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-  Text
+  Text,
+  Button
 } from '@chakra-ui/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { jsPDF } from 'jspdf'
+import html2canvas from 'html2canvas'
 import { store } from '../../state/local/store'
 import { File } from '../../types'
 
 interface ToolbarInterface {
   defaultZoom: string
   updateZoom: (zoom: string) => void
+  handleDownload: () => void
 }
 
 function Toolbar({
   defaultZoom = '70',
-  updateZoom
+  updateZoom,
+  handleDownload
 }: ToolbarInterface): JSX.Element {
   const format = (val: string) => val + `%`
   const parse = (val: string) => val.replace(/^\$/, '')
@@ -61,6 +67,14 @@ function Toolbar({
             <NumberDecrementStepper />
           </NumberInputStepper>
         </NumberInput>
+        <Box paddingX={2}>
+          <Button size="xs" onClick={handleDownload}>
+            <Text fontSize="sm" px={2}>
+              Download PDF
+            </Text>
+            <DownloadIcon />
+          </Button>
+        </Box>
       </Flex>
     </Box>
   )
@@ -116,9 +130,24 @@ function Paper(): JSX.Element {
     }
   })
 
+  function handleDownload() {
+    if (viewerRef.current) {
+      html2canvas(viewerRef.current).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png')
+        const pdf = new jsPDF()
+        pdf.addImage(imgData, 'PNG', 0, 0, 0, 0)
+        pdf.save('download.pdf')
+      })
+    }
+  }
+
   return (
     <Box>
-      <Toolbar defaultZoom={zoom} updateZoom={updateZoom} />
+      <Toolbar
+        defaultZoom={zoom}
+        updateZoom={updateZoom}
+        handleDownload={handleDownload}
+      />
       <div>
         <Box paddingTop={4}>
           <style>{css}</style>

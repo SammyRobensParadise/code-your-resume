@@ -26,7 +26,7 @@ export default function Sidebar() {
   })
 
   return (
-    <Box height="auto" border="1px solid" borderColor="gray.50">
+    <Box border="1px solid" borderRadius="sm" margin={1}>
       <Container className="p-4">
         <Stack>
           <Heading size="sm">Files</Heading>

@@ -1,7 +1,15 @@
 import type { NextPage } from 'next'
 import React, { useEffect, useRef } from 'react'
 import Head from 'next/head'
-import { Button, Flex, Grid, GridItem, Box, Tooltip } from '@chakra-ui/react'
+import {
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Box,
+  Tooltip,
+  Text
+} from '@chakra-ui/react'
 import Footer from '../components/footer/footer'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 
@@ -44,10 +52,25 @@ const Home: NextPage = () => {
           height="-moz-max-content"
         >
           <GridItem w="100%">
+            <Box
+              padding={1}
+              borderRadius={4}
+              borderWidth="1px"
+              borderColor="gray.700"
+              margin={1}
+            >
+              <Flex>
+                <Text paddingX={4}>Editor</Text>
+                <Tooltip label="Open Editor in New Tab">
+                  <Button size="xs" onClick={() => window.open('/code-editor')}>
+                    <ExternalLinkIcon mx="2px" />
+                  </Button>
+                </Tooltip>
+              </Flex>
+            </Box>
             <iframe
               src="/code-editor"
               width="100%"
-              style={{ height: '100%' }}
               title="editor"
               ref={editorRef}
             />
@@ -60,19 +83,16 @@ const Home: NextPage = () => {
               borderColor="gray.700"
               margin={1}
             >
-              <Tooltip label="Open Viewer in New Tab">
-                <Button size="xs" onClick={() => window.open('/viewer')}>
-                  <ExternalLinkIcon mx="2px" />
-                </Button>
-              </Tooltip>
+              <Flex>
+                <Text paddingX={4}>Viewer</Text>
+                <Tooltip label="Open Viewer in New Tab">
+                  <Button size="xs" onClick={() => window.open('/viewer')}>
+                    <ExternalLinkIcon mx="2px" />
+                  </Button>
+                </Tooltip>
+              </Flex>
             </Box>
-            <iframe
-              src="/viewer"
-              width="100%"
-              height="100%"
-              title="viewer"
-              ref={viewerRef}
-            />
+            <iframe src="/viewer" width="100%" title="viewer" ref={viewerRef} />
           </GridItem>
         </Grid>
       </Flex>
