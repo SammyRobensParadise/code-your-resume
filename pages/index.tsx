@@ -1,10 +1,8 @@
 import type { NextPage } from 'next'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Head from 'next/head'
-import { Message } from '../types'
 import { Button, Flex, Grid, GridItem, Box, Tooltip } from '@chakra-ui/react'
 import Footer from '../components/footer/footer'
-import Sidebar from '../components/sidebar/sidebar'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 
 const Home: NextPage = () => {
