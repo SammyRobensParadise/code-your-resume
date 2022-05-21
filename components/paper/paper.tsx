@@ -10,17 +10,13 @@ import {
   Text,
   Button
 } from '@chakra-ui/react'
+
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { jsPDF } from 'jspdf'
 import html2canvas from 'html2canvas'
 
 import { store } from '../../state/local/store'
 import { File } from '../../types'
-import dynamic from 'next/dynamic'
-
-const PDFViewer = dynamic(() => import('./pdf-viewer'), {
-  ssr: false
-})
 
 interface ToolbarInterface {
   defaultZoom: string
@@ -156,13 +152,11 @@ function Paper(): JSX.Element {
       <div>
         <Box paddingTop={4}>
           <style>{css}</style>
-          {/*  <div
+          <div
             className="page"
             ref={viewerRef}
             style={{ transform: `scale(${parseInt(zoom) / 100})` }}
           ></div>
-          */}
-          <PDFViewer />
         </Box>
       </div>
     </Box>
