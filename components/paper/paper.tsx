@@ -8,8 +8,9 @@ import {
   NumberDecrementStepper,
   Text
 } from '@chakra-ui/react'
-import { useEffect, useRef, useState } from 'react'
-import { Message } from '../../types'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { store } from '../../state/local/store'
+import { File } from '../../types'
 
 interface ToolbarInterface {
   defaultZoom: string
@@ -69,47 +70,65 @@ function Paper(): JSX.Element {
   const viewerRef = useRef<HTMLDivElement>(null)
   const [css, updateCss] = useState<string>('')
   const [zoom, updateZoom] = useState<string>('70')
+  const [localStore, setLocalStore] = useState<File[]>([])
 
-  function handleMessage(message: MessageEvent<Message>) {
-    const { payload } = message.data
-    if (viewerRef.current && payload?.length) {
-      const html = payload?.filter((file) => file.language === 'html')
-      const css = payload?.filter((file) => file.language === 'css')
-      if (html?.length) {
-        let htmlString = ''
-        html.forEach((htmlFile) => {
-          htmlString = htmlString + htmlFile.value
-        })
-        viewerRef.current.innerHTML = htmlString
-      }
-      if (css.length) {
-        let cssString = ''
-        css.forEach((cssFile) => {
-          cssString = cssString + cssFile.value
-        })
-        updateCss(cssString)
-      }
+  function update() {
+    const latestStorage = store.getAll()
+    if (latestStorage) {
+      setLocalStore(() => [...latestStorage])
     }
   }
 
+  const write = useCallback(() => {
+    console.log(localStore)
+    let concatHtml = ''
+    let concatCss = ''
+    localStore.forEach((file) => {
+      if (file.extension === 'html') {
+        concatHtml += `${file.value}`
+      }
+      if (file.extension === 'css') {
+        concatCss += `${file.value}`
+      }
+    })
+    if (viewerRef.current) {
+      viewerRef.current.innerHTML = concatHtml
+    }
+    updateCss(concatCss)
+  }, [localStore])
+
   useEffect(() => {
-    window.addEventListener('message', handleMessage)
+    if (localStore.length) {
+      if (viewerRef.current) {
+        write()
+      }
+    }
+  }, [localStore, write])
+
+  useEffect(() => {
+    update()
+  }, [])
+
+  useEffect(() => {
+    window.parent.addEventListener('storage', update)
     return () => {
-      window.removeEventListener('message', handleMessage)
+      window.parent.removeEventListener('storage', update)
     }
   })
 
   return (
     <Box>
       <Toolbar defaultZoom={zoom} updateZoom={updateZoom} />
-      <style>{css}</style>
-      <Box paddingTop={4}>
-        <div
-          className="page"
-          ref={viewerRef}
-          style={{ transform: `scale(${parseInt(zoom) / 100})` }}
-        />
-      </Box>
+      <div>
+        <Box paddingTop={4}>
+          <style>{css}</style>
+          <div
+            className="page"
+            ref={viewerRef}
+            style={{ transform: `scale(${parseInt(zoom) / 100})` }}
+          ></div>
+        </Box>
+      </div>
     </Box>
   )
 }

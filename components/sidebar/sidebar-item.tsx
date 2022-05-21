@@ -11,33 +11,30 @@ import {
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { File, UUID } from '../../types'
-import * as files from '../../state/local/files'
 import { DeleteIcon } from '@chakra-ui/icons'
+import { store } from '../../state/local/store'
 
 function Name({ name, id }: { name: string | undefined; id: UUID }) {
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
   function handleOnSubmit(nextName: string) {
-    if (files) {
-      files.updateFileData({
-        operation: 'NAME',
-        payload: {
-          id,
-          name: nextName,
-          path: nextName
-        }
-      })
-    }
+    store.set({
+      operation: 'NAME',
+      payload: {
+        id,
+        name: nextName,
+        path: nextName
+      }
+    })
+
     setIsEditing(false)
   }
 
   function handleOnClick() {
-    if (files) {
-      files.updateFileData({
-        operation: 'OPEN',
-        payload: { id, name }
-      })
-    }
+    store.set({
+      operation: 'OPEN',
+      payload: { id, name }
+    })
     setIsEditing(false)
   }
 

@@ -1,45 +1,42 @@
 import { Box, Container, Heading, Stack } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { Message } from '../../types'
-import * as files from '../../state/local/files'
 import { File } from '../../types'
 import SideBarItem from './sidebar-item'
+import { store } from '../../state/local/store'
 
 export default function Sidebar() {
-  const [localFiles, setFiles] = useState<File[]>([])
-  const mapFiles = files.useFiles()
+  const [localStore, setLocalStore] = useState<File[]>([])
 
-  function handleMessage(message: MessageEvent<Message>) {
-    const { payload } = message.data
-    if (payload?.length) {
-      setFiles(payload)
+  function update() {
+    const latestStorage = store.getAll()
+    if (latestStorage) {
+      setLocalStore(() => [...latestStorage])
     }
   }
+
   useEffect(() => {
-    window.addEventListener('message', handleMessage)
+    update()
+  }, [])
+
+  useEffect(() => {
+    window.parent.addEventListener('storage', update)
+    window.addEventListener('storage', update)
     return () => {
-      window.removeEventListener('message', handleMessage)
+      window.parent.removeEventListener('storage', update)
+      window.removeEventListener('storage', update)
     }
   })
-  useEffect(() => {
-    console.log(mapFiles)
-  }, [mapFiles])
 
   return (
-    <Box
-      height="auto"
-      border="1px solid"
-      borderColor="gray.50"
-      className="flex-grow w-max"
-    >
+    <Box height="auto" border="1px solid" borderColor="gray.50">
       <Container className="p-4">
         <Stack>
           <Heading as="h3" size="sm">
             Files
           </Heading>
-          {localFiles &&
-            localFiles.length &&
-            localFiles?.map((file) => (
+          {localStore &&
+            localStore.length &&
+            localStore.map((file) => (
               <div key={file.name}>
                 <SideBarItem file={file} />
               </div>

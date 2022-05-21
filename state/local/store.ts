@@ -8,7 +8,7 @@ export const store = {
       case 'CREATE': {
         const { id, name, path, extension, language, value, isOpen } = m.payload
         const fallbackExtension = extension ? extension : 'html'
-        const fallbackName = `default${Math.random() * 20}`
+        const fallbackName = `default${Date.now()}`
         const newId: string = uuidv4()
         const newFile: File = {
           name: name ? name : `${fallbackName}.${fallbackExtension}`,
@@ -45,12 +45,13 @@ export const store = {
       }
 
       case 'NAME': {
-        const { id, name } = m.payload
+        const { id, name, path } = m.payload
         if (id) {
           const file = window.localStorage.getItem(id)
           if (file) {
             const c: File = JSON.parse(file)
             c.name = name ? name : 'unknown.html'
+            c.path = path ? path : 'unknown.html'
             window.localStorage.setItem(id, JSON.stringify(c))
             return true
           }
@@ -105,6 +106,16 @@ export const store = {
     if (id) {
       const file = window.localStorage.getItem(id)
       return file ? JSON.parse(file) : null
+    }
+    return null
+  },
+  getAll: (): null | File[] => {
+    const values: Storage = window.localStorage
+    const size = window.localStorage.length
+    if (size) {
+      return Object.entries(values).map((value) => {
+        return JSON.parse(value[1])
+      })
     }
     return null
   }

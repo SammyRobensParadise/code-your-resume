@@ -2,7 +2,7 @@ import { Extension, File, Language, Message, UUID } from '../../types'
 import { v4 as uuidv4 } from 'uuid'
 import { bind, shareLatest } from '@react-rxjs/core'
 import { createSignal } from '@react-rxjs/utils'
-import { debounceTime, scan } from 'rxjs'
+import { scan } from 'rxjs'
 import React from 'react'
 
 export const DEFAULT_HTML_FILE_NAME = 'index.html'

@@ -10,26 +10,6 @@ import { ExternalLinkIcon } from '@chakra-ui/icons'
 const Home: NextPage = () => {
   const editorRef = useRef<HTMLIFrameElement>(null)
   const viewerRef = useRef<HTMLIFrameElement>(null)
-  const [popoutViewer, setPopoutViewer] = useState<Window | null>(null)
-
-  function handleMessage(message: MessageEvent<Message>) {
-    const { destination } = message.data
-    if (destination === 'viewer' && viewerRef.current) {
-      if (popoutViewer) {
-        popoutViewer.postMessage(
-          message.data,
-          `${window.location.origin}/viewer`
-        )
-      }
-      viewerRef.current.contentWindow?.postMessage(
-        message.data,
-        `${window.location.origin}/viewer`
-      )
-    }
-    if (destination === 'editor' && editorRef.current) {
-      editorRef.current.contentWindow?.postMessage(message.data)
-    }
-  }
 
   function handleWindowResize() {
     if (editorRef.current) {
@@ -39,13 +19,6 @@ const Home: NextPage = () => {
       viewerRef.current.height = `${window.innerHeight - 91}px`
     }
   }
-
-  useEffect(() => {
-    window.addEventListener('message', handleMessage)
-    return () => {
-      window.removeEventListener('message', handleMessage)
-    }
-  })
 
   useEffect(() => {
     window.addEventListener('resize', handleWindowResize)
@@ -66,7 +39,6 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Flex backgroundColor="white">
-        <Sidebar />
         <Grid
           templateColumns="repeat(2, 1fr)"
           gap={2}
@@ -91,10 +63,7 @@ const Home: NextPage = () => {
               margin={1}
             >
               <Tooltip label="Open Viewer in New Tab">
-                <Button
-                  size="xs"
-                  onClick={() => setPopoutViewer(window.open('/viewer'))}
-                >
+                <Button size="xs" onClick={() => window.open('/viewer')}>
                   <ExternalLinkIcon mx="2px" />
                 </Button>
               </Tooltip>

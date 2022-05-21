@@ -1,36 +1,73 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import CodeEditor from './editor'
 import '/node_modules/react-grid-layout/css/styles.css'
 import '/node_modules/react-resizable/css/styles.css'
 import * as files from '../../state/local/files'
 import { File } from '../../types'
+import { store } from '../../state/local/store'
+import { Flex } from '@chakra-ui/react'
+import Sidebar from '../sidebar/sidebar'
 
 export default function EditorContainer() {
-  useEffect(() => {}, [])
+  const [localStore, setLocalStore] = useState<File[]>([])
+
+  function initializeDefaultFiles() {
+    files.defaultFiles.forEach((file) => {
+      store.set({
+        operation: 'CREATE',
+        payload: file
+      })
+    })
+  }
+  function handleOnChange(value: string | undefined, id: string) {
+    store.set({
+      operation: 'VALUE',
+      payload: { value, id }
+    })
+  }
+
+  function update() {
+    const latestStorage = store.getAll()
+    if (latestStorage) {
+      setLocalStore(() => [...latestStorage])
+    }
+  }
+
+  useEffect(() => {
+    const initalStorage = store.getAll()
+    if (!initalStorage) {
+      initializeDefaultFiles()
+    }
+    update()
+  }, [])
+
+  useEffect(() => {
+    window.parent.addEventListener('storage', update)
+    return () => window.parent.removeEventListener('storage', update)
+  })
 
   return (
-    <div className="editors h-full">
-      {/*?.map((file: File) => {
-        const info = file
-        return (
-          <div key={info.name}>
-            {file.isOpen && (
-              <CodeEditor
-                id={info.id}
-                path={info.name}
-                name={info.name}
-                language={info.language}
-                openEditors={}
-                theme="vs-dark"
-                defaultValue={info.value}
-                handleOnChange={(value, event) => {
-                  handleOnChange(info.id, value, event)
-                }}
-              />
-              ) }
-          </div>
-        )
-      })*/}
-    </div>
+    <Flex>
+      <Sidebar />
+      <div className="editors h-full flex-grow">
+        {localStore.map((file: File) => {
+          return (
+            <div key={file.name}>
+              {file.isOpen && (
+                <CodeEditor
+                  id={file.id}
+                  path={file.name}
+                  name={file.name}
+                  language={file.language}
+                  theme="vs-dark"
+                  defaultValue={file.value}
+                  handleOnChange={(value) => handleOnChange(value, file.id)}
+                />
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </Flex>
   )
 }

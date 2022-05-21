@@ -1,7 +1,6 @@
 import React, { ChangeEvent } from 'react'
 import Editor from '@monaco-editor/react'
 import { Language, Theme, UUID } from '../../types'
-import * as files from '../../state/local/files'
 
 import {
   Box,
@@ -18,6 +17,7 @@ import {
   MenuItemOption
 } from '@chakra-ui/react'
 import { CloseIcon } from '@chakra-ui/icons'
+import { store } from '../../state/local/store'
 
 export interface CodeEditorInterface {
   id: UUID
@@ -39,17 +39,12 @@ export const editorColors: { light: string; dark: string; med: string } = {
 
 function Name({ name, id }: { name: string | undefined; id: UUID }) {
   function handleOnSubmit(nextName: string) {
-    if (files) {
-      files.updateFileData({
-        operation: 'NAME',
-        payload: {
-          id,
-          name: nextName,
-          path: nextName
-        }
-      })
-    }
+    store.set({
+      operation: 'NAME',
+      payload: { id, name: nextName, path: nextName }
+    })
   }
+
   return (
     <Editable
       lineHeight="2"
@@ -76,12 +71,10 @@ function LanguageMenu({
 }) {
   function handleOnChange(value: string | string[]) {
     const language = value as Language
-    if (files) {
-      files.updateFileData({
-        operation: 'LANGUAGE',
-        payload: { id, language }
-      })
-    }
+    store.set({
+      operation: 'LANGUAGE',
+      payload: { id, language }
+    })
   }
 
   return (
@@ -146,12 +139,10 @@ export default function CodeEditor({
     theme == 'light' ? editorColors.dark : editorColors.light
 
   function handleClose() {
-    if (files) {
-      files.updateFileData({
-        operation: 'CLOSE',
-        payload: { id: id }
-      })
-    }
+    store.set({
+      operation: 'CLOSE',
+      payload: { id }
+    })
   }
 
   return (
