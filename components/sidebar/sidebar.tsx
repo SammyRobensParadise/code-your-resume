@@ -20,10 +20,8 @@ export default function Sidebar() {
 
   useEffect(() => {
     window.parent.addEventListener('storage', update)
-    window.addEventListener('storage', update)
     return () => {
       window.parent.removeEventListener('storage', update)
-      window.removeEventListener('storage', update)
     }
   })
 
@@ -31,9 +29,7 @@ export default function Sidebar() {
     <Box height="auto" border="1px solid" borderColor="gray.50">
       <Container className="p-4">
         <Stack>
-          <Heading as="h3" size="sm">
-            Files
-          </Heading>
+          <Heading size="sm">Files</Heading>
           {localStore &&
             localStore.length &&
             localStore.map((file) => (
