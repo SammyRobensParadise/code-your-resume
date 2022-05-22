@@ -8,13 +8,15 @@ import {
   MenuList,
   MenuOptionGroup,
   MenuItemOption,
-  Button
+  Button,
+  Text,
+  Flex
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { File, Theme } from '../../types'
 import SideBarItem from './sidebar-item'
 import { store } from '../../state/local/store'
-import { ChevronDownIcon } from '@chakra-ui/icons'
+import { ChevronDownIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { defaultMetadata } from '../../state/local/constants'
 
 export default function Sidebar() {
@@ -60,7 +62,7 @@ export default function Sidebar() {
             ))}
         </Stack>
       </Container>
-      <Container>
+      <Container bottom={8} position="absolute">
         <Menu closeOnSelect={true}>
           <MenuButton as={Button} size="sm">
             Theme
@@ -73,8 +75,23 @@ export default function Sidebar() {
               type="radio"
               onChange={handleOnChange}
             >
-              <MenuItemOption value="light">light</MenuItemOption>
-              <MenuItemOption value="vs-dark">vs-dark</MenuItemOption>
+              <MenuItemOption value="light">
+                {' '}
+                <Flex>
+                  <Box paddingTop={0.25}>
+                    <SunIcon />
+                  </Box>
+                  <Text paddingX={2}>light</Text>
+                </Flex>
+              </MenuItemOption>
+              <MenuItemOption value="vs-dark">
+                <Flex>
+                  <Box paddingTop={0.25}>
+                    <MoonIcon />
+                  </Box>
+                  <Text paddingX={2}>vs-dark</Text>
+                </Flex>
+              </MenuItemOption>
             </MenuOptionGroup>
           </MenuList>
         </Menu>
