@@ -84,6 +84,7 @@ function LanguageMenu({
             ? 'vs-dark'
             : undefined
         }
+        size="sm"
       >
         {language}
         <ChevronDownIcon />
@@ -152,6 +153,7 @@ export default function CodeEditor({
                 ? 'vs-dark'
                 : undefined
             }
+            size="sm"
           >
             <CloseIcon w={3} h={3} />
           </Button>
