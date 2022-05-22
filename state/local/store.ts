@@ -1,6 +1,7 @@
 import { UpdateFileDataEvent } from './files'
 import { v4 as uuidv4 } from 'uuid'
 import { File } from '../../types'
+import { Metadata } from './constants'
 
 export const store = {
   set: (m: UpdateFileDataEvent): boolean => {
@@ -120,5 +121,17 @@ export const store = {
       return v.filter((item: File) => item.type === 'source')
     }
     return null
+  },
+  metadata: {
+    set: (metadata: Metadata) => {
+      window.localStorage.setItem('metadata', JSON.stringify(metadata))
+    },
+    get: (): null | Metadata => {
+      const metadata = window.localStorage.getItem('metadata')
+      if (metadata) {
+        return JSON.parse(metadata)
+      }
+      return null
+    }
   }
 }

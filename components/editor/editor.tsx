@@ -77,7 +77,14 @@ function LanguageMenu({
 
   return (
     <Menu closeOnSelect={false}>
-      <MenuButton as={Button}>
+      <MenuButton
+        as={Button}
+        colorScheme={
+          store.metadata.get()?.editorTheme === 'vs-dark'
+            ? 'vs-dark'
+            : undefined
+        }
+      >
         {language}
         <ChevronDownIcon />
       </MenuButton>
@@ -138,7 +145,14 @@ export default function CodeEditor({
         <Spacer />
         <LanguageMenu backgroundColor={baseColor} language={language} id={id} />
         <Box paddingX={2}>
-          <Button onClick={handleClose}>
+          <Button
+            onClick={handleClose}
+            colorScheme={
+              store.metadata.get()?.editorTheme === 'vs-dark'
+                ? 'vs-dark'
+                : undefined
+            }
+          >
             <CloseIcon w={3} h={3} />
           </Button>
         </Box>
